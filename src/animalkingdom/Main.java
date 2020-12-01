@@ -4,6 +4,21 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Main {
+
+    public static List<Animal> filterAnimals(List<Animal> theList, checkAnimal tester)
+    {
+        List<Animal> tempList = new ArrayList<>();
+
+        for (Animal v : theList)
+        {
+            if (tester.test(v)) {
+                tempList.add(v);
+            }
+        }
+
+        return tempList;
+    }
+
     public static void main(String[] args) {
         
         Mammal panda = new Mammal("Panda", 1869);
@@ -59,6 +74,26 @@ public class Main {
         System.out.println(animals);
 
         System.out.println("\n*** List only those animals the breath with lungs ***");
-        
+        List<Animal> animalsWithLungs = filterAnimals(animals, (v) -> v.getBreath() == "lungs");
+        animalsWithLungs.forEach(v -> System.out.println(v.getName() + " " + v.getReproduce() + " " + v.getMove() + " " + v.getBreath() + " " + v.getYear()));
+
+        System.out.println("\n*** List only those animals that breath with lungs and were named in 1758 ***");
+        List<Animal> animalWithLungsAndNamedIn1758 = filterAnimals(animalsWithLungs, (v) -> v.getYear() == 1758);
+        animalWithLungsAndNamedIn1758.forEach(v -> System.out.println(v.getName() + " " + v.getReproduce() + " " + v.getMove() + " " + v.getBreath() + " " + v.getYear()));
+
+        System.out.println("\n*** List only those animals that lay eggs and breath with lungs ***");
+        List<Animal> animalsWithEggsAndLungs = filterAnimals(animals, (v) -> (v.getReproduce() == "eggs") && (v.getBreath() == "lungs"));
+        animalsWithEggsAndLungs.forEach(v -> System.out.println(v.getName() + " " + v.getReproduce() + " " + v.getMove() + " " + v.getBreath() + " " + v.getYear()));
+
+        System.out.println("\n*** List alphabetically only those animals that were named in 1758 ***");
+        List<Animal> animalsNamedIn1758 = filterAnimals(animals, (v) -> v.getYear() == 1758);
+        animalsNamedIn1758.sort((v1, v2) -> v1.getName().compareToIgnoreCase(v2.getName()));
+        animalsNamedIn1758.forEach(v -> System.out.println(v.getName() + " " + v.getReproduce() + " " + v.getMove() + " " + v.getBreath() + " " + v.getYear()));
+
+        System.out.println("\n*** Stretch Goal ***");
+        System.out.println("\n*** For the list of animals, list alphabetically those animals that are mammals ***");
+        List<Animal> mammalsInAlphabeticalOrder = filterAnimals(animals, (v) ->  (v.getBreath()== "lungs" && v.getMove() == "walk" && v.getReproduce() == "live births"));
+        mammalsInAlphabeticalOrder.sort((v1, v2) -> v1.getName().compareToIgnoreCase(v2.getName()));
+        mammalsInAlphabeticalOrder.forEach(v -> System.out.println(v.getName() + " " + v.getReproduce() + " " + v.getMove() + " " + v.getBreath() + " " + v.getYear()));
     }
 } 
